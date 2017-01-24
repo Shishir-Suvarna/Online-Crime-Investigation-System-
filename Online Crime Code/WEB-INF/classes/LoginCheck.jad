@@ -1,0 +1,53 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 11/22/2012 10:39:50 AM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   Logincheck.java
+
+import CMST.ConnectionBean;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.sql.ResultSet;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LoginCheck extends HttpServlet
+{
+
+    public LoginCheck()
+    {
+    }
+
+    public void init(ServletConfig servletconfig)
+        throws ServletException
+    {
+        super.init(servletconfig);
+    }
+
+    public void destroy()
+    {
+    }
+
+    protected void service(HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse)
+        throws ServletException, IOException
+    {
+        Object obj = null;
+        httpservletresponse.setContentType("text/html");
+        try
+        {
+            System.out.println("in logincheck");
+            ConnectionBean connectionbean = new ConnectionBean();
+            java.sql.Connection connection = connectionbean.getConnection();
+            ResultSet resultset = connectionbean.executeQuery("select * from admin_master");
+            RequestDispatcher requestdispatcher;
+            if(resultset.next())
+                requestdispatcher = httpservletrequest.getRequestDispatcher("ALogin.jsp");
+            else
+                requestdispatcher = httpservletrequest.getRequestDispatcher("AdminRegistrationForm.jsp");
+            requestdispatcher.forward(httpservletrequest, httpservletresponse);
+        }
+        catch(Exception exception)
+        {
+            System.out.println("Error" + exception);
+        }
+    }
+}

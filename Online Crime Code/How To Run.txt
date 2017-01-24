@@ -1,0 +1,46 @@
+Deployment of  Application
+
+1)copy OCR1 application folder to
+	  
+	 F:\Tomcat5.5.9\webapps\
+
+2)click on start.bat in bin folder of tomcat
+3) Create User in Oracle as following:
+
+CREATE USER OCR IDENTIFIED BY OCR;
+
+GRANT DBA TO OCR;
+ 
+CONN OCR/OCR
+
+Now place the all tables in table.txt file at the SQL Command Line
+
+And type following command
+
+	COMMIT;
+
+
+3)create user DataSourceName(DSN) as 
+	
+ click  --> Start
+	--->control Panel
+	  --->Administrative Tools
+
+ 
+Administrative Tools
+		 
+4).Click on Data Sources
+ 
+Data Source
+click on add button
+  --->select Microsoft ODBC for Oracle
+Dasource name:  ocr		
+user: ocr
+And then click OK button
+
+5) Start tomcat
+
+6) Open browser and type localhost:8080/OCR1
+
+
+

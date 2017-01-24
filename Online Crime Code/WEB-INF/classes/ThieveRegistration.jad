@@ -1,0 +1,79 @@
+// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 11/22/2012 11:48:41 AM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   ThieveRegistration.java
+
+import CMST.ConnectionBean;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class ThieveRegistration extends HttpServlet
+{
+
+    public ThieveRegistration()
+    {
+        noy = "0";
+        nom = "0";
+        nod = "0";
+        ws = "";
+    }
+
+    public void init(ServletConfig servletconfig)
+        throws ServletException
+    {
+        super.init(servletconfig);
+    }
+
+    public void destroy()
+    {
+    }
+
+    protected void service(HttpServletRequest httpservletrequest, HttpServletResponse httpservletresponse)
+        throws ServletException, IOException
+    {
+        RequestDispatcher requestdispatcher = httpservletrequest.getRequestDispatcher("AdminInserted.jsp");
+        httpservletresponse.setContentType("text/html");
+        PrintWriter printwriter = httpservletresponse.getWriter();
+        int i = Integer.parseInt(httpservletrequest.getParameter("thid"));
+        String s = httpservletrequest.getParameter("thName");
+        String s1 = httpservletrequest.getParameter("tloc");
+        noy = httpservletrequest.getParameter("noy");
+        nom = httpservletrequest.getParameter("nom");
+        nod = httpservletrequest.getParameter("nod");
+        System.out.println((new StringBuilder()).append("values id ").append(nom).toString());
+        if(noy == "")
+            noy = "0";
+        if(nom == "")
+            nom = "0";
+        if(nod == "")
+            nod = "0";
+        ws = (new StringBuilder()).append(noy).append(",").append(nom).append(",").append(nod).toString();
+        String s2 = httpservletrequest.getParameter("tth");
+        try
+        {
+            ConnectionBean connectionbean = new ConnectionBean();
+            Connection connection = connectionbean.getConnection();
+            PreparedStatement preparedstatement = connection.prepareStatement("insert into thieves values(?,?,?,?,?)");
+            preparedstatement.setInt(1, i);
+            preparedstatement.setString(2, s);
+            preparedstatement.setString(3, s1);
+            preparedstatement.setString(4, ws);
+            preparedstatement.setString(5, s2);
+            int j = preparedstatement.executeUpdate();
+            if(j == 1)
+                requestdispatcher.forward(httpservletrequest, httpservletresponse);
+        }
+        catch(Exception exception)
+        {
+            printwriter.println((new StringBuilder()).append("Error").append(exception).toString());
+        }
+    }
+
+    String noy;
+    String nom;
+    String nod;
+    String ws;
+}
